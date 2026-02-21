@@ -28,7 +28,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger 
-} from '@radix-ui/react-tooltip';
+} from '@/components/ui/tooltip';
 import { 
   AlertTriangle,
   Shield,
