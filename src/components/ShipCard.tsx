@@ -1,97 +1,61 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
-import { Ship } from '../types/ship';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Ship } from "@/types/ship";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShipClass } from '../types/ship';
-import { CLASS_ICONS } from '../types/ship';
-import { toast } from 'react-hot-toast';
+import { Button } from "@/components/ui/button";
+import { CLASS_ICONS } from "@/types/ship";
+import { cn } from "@/lib/utils";
 
 interface ShipCardProps {
   ship: Ship;
-  onAddShip: (ship: Ship) => void;
-  onReinforceShip: (ship: Ship) => void;
-  addedShips: Ship[];
+  onAdd: (ship: Ship) => void;
+  disabled?: boolean;
 }
 
-const ShipCard: React.FC<ShipCardProps> = ({ ship, onAddShip, onReinforceShip, addedShips }) => {
-  const [isAdded, setIsAdded] = useState(false);
-  const [reinforceCount, setReinforceCount] = useState(0);
-
-  useEffect(() => {
-    // Check if ship is already added
-    const shipAdded = addedShips.some(addedShip => addedShip.id === ship.id);
-    setIsAdded(shipAdded);
-    
-    // Count how many of this ship type are reinforced
-    const count = addedShips.filter(addedShip => addedShip.id === ship.id).length;
-    setReinforceCount(count);
-  }, [addedShips, ship.id]);
-
-  const handleAdd = () => {
-    if (isAdded) {
-      toast.error("Ship already added!");
-      return;
+export function ShipCard({ ship, onAdd, disabled }: ShipCardProps) {
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case "S": return "bg-purple-500";
+      case "A": return "bg-blue-500";
+      case "B": return "bg-green-500";
+      case "C": return "bg-yellow-500";
+      case "D": return "bg-orange-500";
+      case "Sit.": return "bg-red-500";
+      default: return "bg-gray-500";
     }
-    onAddShip(ship);
-  };
-
-  const handleReinforce = () => {
-    // Check if we've reached the limit of 9 reinforced ships
-    if (reinforceCount >= 9) {
-      toast.error("Maximum of 9 reinforced ships reached!");
-      return;
-    }
-    onReinforceShip(ship);
   };
 
   return (
-    <Card className="w-full max-w-md bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-xl font-bold text-slate-100 flex items-center gap-2">
-            <span className="text-2xl">{CLASS_ICONS[ship.shipClass]}</span>
-            {ship.name}
-          </CardTitle>
-          <Badge variant="secondary" className="bg-slate-700 text-slate-200">
+    <Card className={cn(
+      "bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-300",
+      "shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20",
+      disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105",
+      "h-full flex flex-col"
+    )}>
+      <CardContent className="p-3 flex-1 flex flex-col">
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h3 className="font-bold text-cyan-300 text-sm">{ship.name}</h3>
+            <div className="flex items-center gap-1 mt-1">
+              <span className="text-cyan-400 font-mono text-xs">{CLASS_ICONS[ship.shipClass]}</span>
+              <span className="text-gray-300 text-xs">{ship.shipClass}</span>
+            </div>
+          </div>
+          <Badge className={cn("text-xs", getTierColor(ship.tier))}>
             {ship.tier}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex justify-between items-center">
-          <span className="text-slate-300">Class:</span>
-          <span className="font-medium text-slate-100">{ship.shipClass}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-slate-300">CP Cost:</span>
-          <span className="font-medium text-slate-100">{ship.cp}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-slate-300">Reinforced:</span>
-          <span className="font-medium text-slate-100">{reinforceCount}/9</span>
-        </div>
-        <div className="flex gap-2 pt-2">
+        
+        <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-700">
+          <span className="text-cyan-400 font-mono text-xs">CP: {ship.cp}</span>
           <Button 
-            onClick={handleAdd} 
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
-            disabled={isAdded}
+            onClick={() => onAdd(ship)}
+            disabled={disabled}
+            className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
           >
             Add
-          </Button>
-          <Button 
-            onClick={handleReinforce} 
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-            disabled={reinforceCount >= 9}
-          >
-            Reinforce
           </Button>
         </div>
       </CardContent>
     </Card>
   );
-};
-
-export default ShipCard;
+}
