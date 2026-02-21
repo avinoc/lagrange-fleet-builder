@@ -109,7 +109,9 @@ export function FleetBuilder() {
         );
       } else {
         // Add new ship with 0 CP cost (reinforce)
-        return [...prevFleet, { ship, count: 1 }];
+        // We need to create a new ship object with 0 CP for reinforcement
+        const reinforcedShip = { ...ship, cp: 0 };
+        return [...prevFleet, { ship: reinforcedShip, count: 1 }];
       }
     });
   };
