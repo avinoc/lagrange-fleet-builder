@@ -223,13 +223,15 @@ export function FleetBuilder() {
                   </div>
                 </div>
                 <Select value={selectedClass} onValueChange={(value) => setSelectedClass(value as any)}>
-                  <SelectTrigger className="bg-gray-800/50 border-cyan-500/30 text-white">
+                  <SelectTrigger className="bg-gray-800/50 border-cyan-500/30 text-white w-40">
                     <SelectValue placeholder="Filter by class" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-cyan-500/30">
-                    <SelectItem value="All">All Classes</SelectItem>
+                  <SelectContent className="bg-gray-900 border-cyan-500/30 text-white">
+                    <SelectItem value="All" className="text-white">All Classes</SelectItem>
                     {SHIP_CLASSES.map(shipClass => (
-                      <SelectItem key={shipClass} value={shipClass}>{shipClass}</SelectItem>
+                      <SelectItem key={shipClass} value={shipClass} className="text-white">
+                        {shipClass}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
