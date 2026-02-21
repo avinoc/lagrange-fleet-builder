@@ -229,7 +229,7 @@ export function FleetBuilder() {
                   <SelectContent className="bg-gray-900 border-cyan-500/30 text-white">
                     <SelectItem value="All" className="text-white">All Classes</SelectItem>
                     {SHIP_CLASSES.map(shipClass => (
-                      <SelectItem key={shipClass} value={shipClass} className="text-white">
+                      <SelectItem key={shipClass} value={shipClass} className="text-white hover:bg-cyan-600/30">
                         {shipClass}
                       </SelectItem>
                     ))}
