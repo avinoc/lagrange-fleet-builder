@@ -164,6 +164,25 @@ export function FleetBuilder() {
             Fleet Builder
           </h1>
           <p className="text-gray-400">Create your space fleet with a maximum CP of 400</p>
+          
+          <div className="flex justify-center mt-4 gap-2">
+            <Button 
+              onClick={clearFleet}
+              variant="destructive"
+              className="bg-red-600/20 hover:bg-red-600/30 text-red-300"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Clear Fleet
+            </Button>
+            <Button 
+              onClick={generateShareUrl}
+              variant="outline"
+              className="border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Your Fleet
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -197,25 +216,6 @@ export function FleetBuilder() {
                       </Badge>
                     </div>
                   ))}
-                </div>
-                
-                <div className="flex gap-2 pt-2">
-                  <Button 
-                    onClick={clearFleet}
-                    variant="destructive"
-                    className="flex-1 bg-red-600/20 hover:bg-red-600/30 text-red-300"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Clear Fleet
-                  </Button>
-                  <Button 
-                    onClick={generateShareUrl}
-                    variant="outline"
-                    className="flex-1 border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10"
-                  >
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share
-                  </Button>
                 </div>
               </div>
             </CardContent>
