@@ -364,6 +364,7 @@ export function FleetBuilder() {
                   ship={ship} 
                   onAdd={addShip}
                   onReinforce={reinforceShip}
+                  // Only disable the add button, not the reinforce button
                   disabled={totalCP + ship.cp > 400}
                 />
               ))}
