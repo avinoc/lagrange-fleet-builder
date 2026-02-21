@@ -72,6 +72,8 @@ export const ships: Ship[] = [
   { id: "s-levy9", name: "S-Levy9 - Heavy Torpedo Escort Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
   { id: "silent-assassin", name: "Silent Assassin - Armored Corvette", shipClass: "Corvette", tier: "C", cp: 0 },
   { id: "void-elfin", name: "Void Elfin - Stealth Missile Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
+  { id: "phecda-heavy", name: "Phecda - Heavy Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
+  { id: "phecda-assault", name: "Phecda - Assault Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
 
   // Frigates
   { id: "carilion-cannon", name: "Carilion - Heavy Cannon Frigate", shipClass: "Frigate", tier: "A", cp: 5 },
@@ -165,6 +167,7 @@ export const ships: Ship[] = [
   { id: "alioth-repair", name: "Alioth - Repair Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
   { id: "alioth-defensive", name: "Alioth - Defensive Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
   { id: "alioth-support", name: "Alioth - Support Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
+  { id: "xt-20-auxiliary", name: "XT-20 - Auxiliary Cruiser", shipClass: "Cruiser", tier: "A", cp: 14 },
 
   // Battlecruisers
   { id: "constantine", name: "Constantine the Great - Multi-Role Battlecruiser", shipClass: "Battlecruiser", tier: "A", cp: 35 },
