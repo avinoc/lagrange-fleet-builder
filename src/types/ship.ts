@@ -56,6 +56,8 @@ export const ships: Ship[] = [
   { id: "strix-a100", name: "Strix A100 - Joint Attacker", shipClass: "Fighter", tier: "A", cp: 0 },
   { id: "vitas-a021", name: "Vitas A021 - Heavy Attacker", shipClass: "Fighter", tier: "A", cp: 0 },
   { id: "vitas-b010", name: "Vitas-B010 - Bomber", shipClass: "Fighter", tier: "S", cp: 0 },
+  { id: "merak-light", name: "Merak - Light Attacker", shipClass: "Fighter", tier: "TBD", cp: 0 },
+  { id: "merak-combat", name: "Merak - Combat Attacker", shipClass: "Fighter", tier: "TBD", cp: 0 },
 
   // Corvettes (all 0 CP)
   { id: "cellular-defender", name: "Cellular Defender - Heavy Torpedo Corvette", shipClass: "Corvette", tier: "S", cp: 0 },
@@ -70,8 +72,6 @@ export const ships: Ship[] = [
   { id: "s-levy9", name: "S-Levy9 - Heavy Torpedo Escort Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
   { id: "silent-assassin", name: "Silent Assassin - Armored Corvette", shipClass: "Corvette", tier: "C", cp: 0 },
   { id: "void-elfin", name: "Void Elfin - Stealth Missile Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
-  { id: "phecda-heavy", name: "Phecda - Heavy Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
-  { id: "phecda-assault", name: "Phecda - Assault Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
 
   // Frigates
   { id: "carilion-cannon", name: "Carilion - Heavy Cannon Frigate", shipClass: "Frigate", tier: "A", cp: 5 },
