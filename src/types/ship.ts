@@ -170,6 +170,7 @@ export const ships: Ship[] = [
   { id: "marshal-crux", name: "Marshal Crux - Carrier", shipClass: "Carrier", tier: "A", cp: 40 },
   { id: "solar-whale", name: "Solar Whale - Armed Tactical Carrier", shipClass: "Carrier", tier: "S", cp: 55 },
   { id: "eternal-heavens", name: "Eternal Heavens - UAV Carrier", shipClass: "Carrier", tier: "A", cp: 40 },
+  { id: "dubhe", name: "Dubhe - Support Carrier", shipClass: "Carrier", tier: "TBD", cp: 40 },
 
   // Battleships
   { id: "warspite", name: "Warspite", shipClass: "Battleship", tier: "-", cp: 100 },
