@@ -227,42 +227,7 @@ export function FleetBuilder() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10">
-            <CardHeader>
-              <CardTitle className="text-cyan-300 flex items-center gap-2">
-                <span className="text-2xl">📊</span> Fleet Summary
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-gray-300">Total CP</span>
-                    <span className="font-mono text-cyan-400">{totalCP}/400</span>
-                  </div>
-                  <div className="w-full bg-gray-800 rounded-full h-2.5">
-                    <div 
-                      className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2.5 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min(100, (totalCP / 400) * 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  {SHIP_CLASSES.map(shipClass => (
-                    <div key={shipClass} className="flex justify-between items-center">
-                      <span className="text-gray-300 text-sm">{shipClass}</span>
-                      <Badge className="bg-cyan-600/30 text-cyan-300">
-                        {getShipClassCount(shipClass)}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 lg:col-span-2">
+          <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 lg:col-span-3">
             <CardHeader>
               <CardTitle className="text-cyan-300 flex items-center gap-2">
                 <span className="text-2xl">🚀</span> Ship Selection
