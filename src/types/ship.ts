@@ -163,6 +163,7 @@ export const ships: Ship[] = [
   { id: "spear-uranus", name: "Spear of Uranus - Heavy Battlecruiser", shipClass: "Battlecruiser", tier: "S", cp: 35 },
   { id: "st59-defensive", name: "ST59 - Defensive Battlecruiser", shipClass: "Battlecruiser", tier: "A", cp: 28 },
   { id: "thunderbolt-star", name: "Thunderbolt Star - Multi-Role Arsenal Ship", shipClass: "Battlecruiser", tier: "A", cp: 35 },
+  { id: "plutus-shield", name: "Shield of Plutus", shipClass: "Battlecruiser", tier: "S", cp: 35 },
 
   // Carriers
   { id: "cv3000", name: "CV3000 - High-Speed Carrier", shipClass: "Carrier", tier: "A", cp: 40 },
