@@ -125,6 +125,8 @@ export const ships: Ship[] = [
   { id: "winged-hussar-aa", name: "Winged Hussar - Area-Denial Anti-Aircraft Destroyer", shipClass: "Destroyer", tier: "A", cp: 6 },
   { id: "winged-hussar-missile", name: "Winged Hussar - Light Missile Destroyer", shipClass: "Destroyer", tier: "B", cp: 6 },
   { id: "winged-hussar-integrated", name: "Winged Hussar - Integrated Missile Destroyer", shipClass: "Destroyer", tier: "B", cp: 6 },
+  { id: "mizar-maneuver", name: "Mizar - Maneuver Destroyer", shipClass: "Destroyer", tier: "TBD", cp: 12 },
+  { id: "mizar-torpedo", name: "Mizar - Torpedo Destroyer", shipClass: "Destroyer", tier: "TBD", cp: 12 },
 
   // Cruisers
   { id: "callisto-cluster", name: "Callisto - Cluster Torpedo Raid Ship", shipClass: "Cruiser", tier: "A", cp: 20 },
