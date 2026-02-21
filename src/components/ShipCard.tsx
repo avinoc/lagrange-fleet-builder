@@ -28,15 +28,16 @@ export function ShipCard({ ship, onAdd, disabled }: ShipCardProps) {
     <Card className={cn(
       "bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-300",
       "shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20",
-      disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+      disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105",
+      "h-full flex flex-col"
     )}>
-      <CardContent className="p-4">
+      <CardContent className="p-3 flex-1 flex flex-col">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="font-bold text-cyan-300 text-lg">{ship.name}</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-cyan-400 font-mono">{CLASS_ICONS[ship.shipClass]}</span>
-              <span className="text-gray-300">{ship.shipClass}</span>
+            <h3 className="font-bold text-cyan-300 text-sm">{ship.name}</h3>
+            <div className="flex items-center gap-1 mt-1">
+              <span className="text-cyan-400 font-mono text-xs">{CLASS_ICONS[ship.shipClass]}</span>
+              <span className="text-gray-300 text-xs">{ship.shipClass}</span>
             </div>
           </div>
           <Badge className={cn("text-xs", getTierColor(ship.tier))}>
@@ -44,12 +45,12 @@ export function ShipCard({ ship, onAdd, disabled }: ShipCardProps) {
           </Badge>
         </div>
         
-        <div className="flex justify-between items-center mt-3">
-          <span className="text-cyan-400 font-mono">CP: {ship.cp}</span>
+        <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-700">
+          <span className="text-cyan-400 font-mono text-xs">CP: {ship.cp}</span>
           <Button 
             onClick={() => onAdd(ship)}
             disabled={disabled}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
           >
             Add
           </Button>
