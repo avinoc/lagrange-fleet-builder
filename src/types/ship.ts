@@ -156,6 +156,9 @@ export const ships: Ship[] = [
   { id: "predator-tactical", name: "Predator - Tactical Aircraft Cruiser", shipClass: "Cruiser", tier: "B", cp: 18 },
   { id: "ranger-comprehensive", name: "Ranger - Comprehensive Warfare Cruiser", shipClass: "Cruiser", tier: "B", cp: 18 },
   { id: "ranger-ion", name: "Ranger - Heavy Ion Cannon Cruiser", shipClass: "Cruiser", tier: "A", cp: 18 },
+  { id: "alioth-repair", name: "Alioth - Repair Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
+  { id: "alioth-defensive", name: "Alioth - Defensive Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
+  { id: "alioth-support", name: "Alioth - Support Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
 
   // Battlecruisers
   { id: "constantine", name: "Constantine the Great - Multi-Role Battlecruiser", shipClass: "Battlecruiser", tier: "A", cp: 35 },
