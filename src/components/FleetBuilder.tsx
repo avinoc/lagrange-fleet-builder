@@ -13,13 +13,6 @@ import {
   DialogTrigger 
 } from "@/components/ui/dialog";
 import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
-import { 
   Table, 
   TableBody, 
   TableCell, 
@@ -47,6 +40,16 @@ export function FleetBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState<Ship["shipClass"] | "All">("All");
   const [totalCP, setTotalCP] = useState(0);
+  const [activeClasses, setActiveClasses] = useState<Record<Ship["shipClass"], boolean>>({
+    Fighter: true,
+    Corvette: true,
+    Frigate: true,
+    Destroyer: true,
+    Cruiser: true,
+    Battlecruiser: true,
+    Carrier: true,
+    Battleship: true,
+  });
 
   // Load fleet from localStorage on mount
   useEffect(() => {
@@ -137,13 +140,35 @@ export function FleetBuilder() {
   const filteredShips = ships.filter(ship => {
     const matchesSearch = ship.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesClass = selectedClass === "All" || ship.shipClass === selectedClass;
-    return matchesSearch && matchesClass;
+    const classActive = activeClasses[ship.shipClass];
+    return matchesSearch && matchesClass && classActive;
   });
 
   const getShipClassCount = (shipClass: Ship["shipClass"]) => {
     return fleet
       .filter(item => item.ship.shipClass === shipClass)
       .reduce((sum, item) => sum + item.count, 0);
+  };
+
+  const toggleClass = (shipClass: Ship["shipClass"]) => {
+    setActiveClasses(prev => ({
+      ...prev,
+      [shipClass]: !prev[shipClass]
+    }));
+  };
+
+  const toggleAllClasses = () => {
+    const allActive = Object.values(activeClasses).every(active => active);
+    setActiveClasses(prev => ({
+      Fighter: !allActive,
+      Corvette: !allActive,
+      Frigate: !allActive,
+      Destroyer: !allActive,
+      Cruiser: !allActive,
+      Battlecruiser: !allActive,
+      Carrier: !allActive,
+      Battleship: !allActive,
+    }));
   };
 
   return (
@@ -222,19 +247,32 @@ export function FleetBuilder() {
                     <Filter className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   </div>
                 </div>
-                <Select value={selectedClass} onValueChange={(value) => setSelectedClass(value as any)}>
-                  <SelectTrigger className="bg-gray-800/50 border-cyan-500/30 text-white w-40">
-                    <SelectValue placeholder="Filter by class" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-900 border-cyan-500/30 text-white">
-                    <SelectItem value="All" className="text-white">All Classes</SelectItem>
-                    {SHIP_CLASSES.map(shipClass => (
-                      <SelectItem key={shipClass} value={shipClass} className="text-white hover:bg-cyan-600/30">
-                        {shipClass}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-2">
+                  <Button 
+                    onClick={toggleAllClasses}
+                    variant="outline"
+                    className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20"
+                  >
+                    {Object.values(activeClasses).every(active => active) ? "Deselect All" : "Select All"}
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {SHIP_CLASSES.map(shipClass => (
+                    <Button
+                      key={shipClass}
+                      onClick={() => toggleClass(shipClass)}
+                      variant={activeClasses[shipClass] ? "default" : "outline"}
+                      className={`bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 ${
+                        activeClasses[shipClass] ? "bg-cyan-600/20 text-cyan-300" : ""
+                      }`}
+                    >
+                      {shipClass}
+                    </Button>
+                  ))}
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
