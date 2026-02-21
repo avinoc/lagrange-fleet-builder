@@ -99,6 +99,8 @@ export const ships: Ship[] = [
   { id: "ruby-railgun", name: "Ruby - Heavy Railgun Frigate", shipClass: "Frigate", tier: "B", cp: 5 },
   { id: "xenostinger-tactical", name: "XenoStinger - Tactical Frigate", shipClass: "Frigate", tier: "S", cp: 8 },
   { id: "xenostinger-aa", name: "XenoStinger - Anti-Aircraft Frigate", shipClass: "Frigate", tier: "A", cp: 6 },
+  { id: "alkiad-generic", name: "Alkiad - Generic Frigate", shipClass: "Frigate", tier: "TBD", cp: 6 },
+  { id: "alkiad-special", name: "Alkiad - Special Frigate", shipClass: "Frigate", tier: "TBD", cp: 6 },
 
   // Destroyers
   { id: "ac721-assault", name: "AC721 - Heavy Dual-Purpose Assault Ship", shipClass: "Destroyer", tier: "C", cp: 12 },
