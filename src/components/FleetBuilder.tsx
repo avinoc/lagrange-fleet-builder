@@ -95,6 +95,25 @@ export function FleetBuilder() {
     });
   };
 
+  const reinforceShip = (ship: Ship) => {
+    // Add ship with 0 CP cost (reinforce)
+    setFleet(prevFleet => {
+      const existingItem = prevFleet.find(item => item.ship.id === ship.id);
+      
+      if (existingItem) {
+        // If ship already exists, increase count
+        return prevFleet.map(item => 
+          item.ship.id === ship.id 
+            ? { ...item, count: item.count + 1 } 
+            : item
+        );
+      } else {
+        // Add new ship with 0 CP cost (reinforce)
+        return [...prevFleet, { ship, count: 1 }];
+      }
+    });
+  };
+
   const removeShip = (shipId: string) => {
     setFleet(prevFleet => {
       const existingItem = prevFleet.find(item => item.ship.id === shipId);
@@ -342,6 +361,7 @@ export function FleetBuilder() {
                   key={ship.id} 
                   ship={ship} 
                   onAdd={addShip}
+                  onReinforce={reinforceShip}
                   disabled={totalCP + ship.cp > 400}
                 />
               ))}
