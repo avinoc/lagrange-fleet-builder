@@ -59,4 +59,16 @@ const SelectItem = React.forwardRef<
 ));
 SelectItem.displayName = "SelectItem";
 
-export { Select, SelectTrigger, SelectContent, SelectItem };
+const SelectValue = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex-1 text-sm", className)}
+    {...props}
+  />
+));
+SelectValue.displayName = "SelectValue";
+
+export { Select, SelectTrigger, SelectContent, SelectItem, SelectValue };
