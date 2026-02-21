@@ -26,7 +26,8 @@ import {
   Trash2, 
   Plus, 
   Filter,
-  X
+  X,
+  Download
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -171,6 +172,31 @@ export function FleetBuilder() {
     }));
   };
 
+  const generateShareCode = () => {
+    if (fleet.length === 0) {
+      showError("Your fleet is empty. Add ships to generate a share code.");
+      return;
+    }
+    
+    try {
+      const encodedFleet = btoa(JSON.stringify(fleet));
+      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${encodedFleet}`;
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+          showSuccess("Share code copied to clipboard!");
+        })
+        .catch(err => {
+          console.error('Failed to copy: ', err);
+          showError("Failed to copy share code");
+        });
+    } catch (error) {
+      console.error("Error generating share code:", error);
+      showError("Failed to generate share code");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -181,6 +207,14 @@ export function FleetBuilder() {
           <p className="text-gray-400">Create your space fleet with a maximum CP of 400</p>
           
           <div className="flex justify-center mt-4 gap-2">
+            <Button 
+              onClick={generateShareCode}
+              variant="outline"
+              className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Fleet
+            </Button>
             <Button 
               onClick={clearFleet}
               variant="destructive"
@@ -218,7 +252,7 @@ export function FleetBuilder() {
                   {SHIP_CLASSES.map(shipClass => (
                     <div key={shipClass} className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">{shipClass}</span>
-                      <Badge className="bg-cyan-600/30 text-cyan-300">
+                      <Badge className="bg-c-cyan-600/30 text-cyan-300">
                         {getShipClassCount(shipClass)}
                       </Badge>
                     </div>
