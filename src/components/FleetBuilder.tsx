@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Ship, ships, SHIP_CLASSES } from "@/types/ship";
-import ShipCard from "@/components/ShipCard"; // Fixed import
+import { ShipCard } from "@/components/ShipCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -312,7 +312,7 @@ export function FleetBuilder() {
                 <Button 
                   onClick={toggleAllClasses}
                   variant="outline"
-                  className="bg-gray-800/50 border-ccyan-500/30 text-white hover:bg-cyan-600/20"
+                  className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20"
                 >
                   {Object.values(activeClasses).every(active => active) ? "Deselect All" : "Select All"}
                 </Button>
