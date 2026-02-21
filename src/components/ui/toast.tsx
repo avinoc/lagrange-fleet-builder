@@ -3,21 +3,25 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 
-const Toast = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "relative flex w-full flex-col p-4 shadow-lg transition-all duration-300",
-        className
-      )}
-      {...props}
-    />
-  );
-});
+interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
+  ({ className, open, onOpenChange, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "relative flex w-full flex-col p-4 shadow-lg transition-all duration-300",
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
 Toast.displayName = "Toast";
 
 const ToastViewport = React.forwardRef<
