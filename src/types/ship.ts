@@ -122,7 +122,7 @@ export const ships: Ship[] = [
   { id: "taurus-assault", name: "Taurus - Assault Destroyer", shipClass: "Destroyer", tier: "A", cp: 8 },
   { id: "tundra-tactical", name: "Tundra - Tactical Destroyer", shipClass: "Destroyer", tier: "A", cp: 9 },
   { id: "tundra-aircraft", name: "Tundra - Aircraft Destroyer", shipClass: "Destroyer", tier: "S", cp: 9 },
-  { id: "winged-hussar-aa", name: "Winged Hussar - Area-Denial Anti-Aircraft Destroyer", shipClass: "Destroyer", tier: "将进一步", cp: 6 },
+  { id: "winged-hussar-aa", name: "Winged Hussar - Area-Denial Anti-Aircraft Destroyer", shipClass: "Destroyer", tier: "A", cp: 6 },
   { id: "winged-hussar-missile", name: "Winged Hussar - Light Missile Destroyer", shipClass: "Destroyer", tier: "B", cp: 6 },
   { id: "winged-hussar-integrated", name: "Winged Hussar - Integrated Missile Destroyer", shipClass: "Destroyer", tier: "B", cp: 6 },
 
