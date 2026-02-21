@@ -8,11 +8,10 @@ import { cn } from "@/lib/utils";
 interface ShipCardProps {
   ship: Ship;
   onAdd: (ship: Ship) => void;
-  onReinforce?: (ship: Ship) => void;
   disabled?: boolean;
 }
 
-export function ShipCard({ ship, onAdd, onReinforce, disabled }: ShipCardProps) {
+export function ShipCard({ ship, onAdd, disabled }: ShipCardProps) {
   const getTierColor = (tier: string) => {
     switch (tier) {
       case "S": return "bg-purple-500";
@@ -48,25 +47,13 @@ export function ShipCard({ ship, onAdd, onReinforce, disabled }: ShipCardProps) 
         
         <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-700">
           <span className="text-cyan-400 font-mono text-xs">CP: {ship.cp}</span>
-          <div className="flex gap-2">
-            {onReinforce && (
-              <Button 
-                onClick={() => onReinforce(ship)}
-                disabled={disabled}
-                variant="outline"
-                className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20 text-xs px-2 py-1 h-6"
-              >
-                Reinforce
-              </Button>
-            )}
-            <Button 
-              onClick={() => onAdd(ship)}
-              disabled={disabled}
-              className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
-            >
-              Add
-            </Button>
-          </div>
+          <Button 
+            onClick={() => onAdd(ship)}
+            disabled={disabled}
+            className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
+          >
+            Add
+          </Button>
         </div>
       </CardContent>
     </Card>
