@@ -1,24 +1,17 @@
-import { useTheme } from "next-themes";
 import { Toaster as Sonner } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
-
+const SonnerToaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
-      className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton:
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "bg-gray-900 border border-cyan-500/30 backdrop-blur-sm text-white",
+          description: "text-gray-300",
+          actionButton: "bg-cyan-600 text-white hover:bg-cyan-700",
+          cancelButton: "bg-gray-800 text-gray-300 hover:bg-gray-700",
         },
       }}
       {...props}
@@ -26,4 +19,4 @@ const Toaster = ({ ...props }: ToasterProps) => {
   );
 };
 
-export { Toaster };
+export { SonnerToaster as Toaster };

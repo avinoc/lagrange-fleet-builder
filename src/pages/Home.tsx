@@ -1,6 +1,6 @@
 import { FleetBuilder } from "@/components/FleetBuilder";
 
-const Index = () => {
+const Home = () => {
   return (
     <div className="min-h-screen">
       <FleetBuilder />
@@ -8,4 +8,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Home;

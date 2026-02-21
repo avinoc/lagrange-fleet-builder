@@ -1,17 +1,29 @@
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 export const showSuccess = (message: string) => {
-  toast.success(message);
+  const { addToast } = useToast();
+  addToast({
+    title: "Success",
+    description: message,
+    duration: 3000,
+  });
 };
 
 export const showError = (message: string) => {
-  toast.error(message);
+  const { addToast } = useToast();
+  addToast({
+    title: "Error",
+    description: message,
+    duration: 3000,
+    action: null,
+  });
 };
 
-export const showLoading = (message: string) => {
-  return toast.loading(message);
-};
-
-export const dismissToast = (toastId: string) => {
-  toast.dismiss(toastId);
+export const showInfo = (message: string) => {
+  const { addToast } = useToast();
+  addToast({
+    title: "Info",
+    description: message,
+    duration: 3000,
+  });
 };
