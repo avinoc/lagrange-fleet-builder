@@ -226,69 +226,7 @@ export function FleetBuilder() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 lg:col-span-3">
-            <CardHeader>
-              <CardTitle className="text-cyan-300 flex items-center gap-2">
-                <span className="text-2xl">🚀</span> Ship Selection
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col md:flex-row gap-4 mb-6">
-                <div className="flex-1">
-                  <div className="relative">
-                    <Input
-                      placeholder="Search ships..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 pl-10"
-                    />
-                    <Filter className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Button 
-                    onClick={toggleAllClasses}
-                    variant="outline"
-                    className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20"
-                  >
-                    {Object.values(activeClasses).every(active => active) ? "Deselect All" : "Select All"}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <div className="flex flex-wrap gap-2">
-                  {SHIP_CLASSES.map(shipClass => (
-                    <Button
-                      key={shipClass}
-                      onClick={() => toggleClass(shipClass)}
-                      variant={activeClasses[shipClass] ? "default" : "outline"}
-                      className={`bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 ${
-                        activeClasses[shipClass] ? "bg-cyan-600/20 text-cyan-300" : ""
-                      }`}
-                    >
-                      {shipClass}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredShips.map(ship => (
-                  <ShipCard 
-                    key={ship.id} 
-                    ship={ship} 
-                    onAdd={addShip}
-                    disabled={totalCP + ship.cp > 400}
-                  />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10">
+        <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 mb-8">
           <CardHeader>
             <CardTitle className="text-cyan-300 flex items-center gap-2">
               <span className="text-2xl">📋</span> Your Fleet
@@ -348,6 +286,66 @@ export function FleetBuilder() {
                 </TableBody>
               </Table>
             )}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10">
+          <CardHeader>
+            <CardTitle className="text-cyan-300 flex items-center gap-2">
+              <span className="text-2xl">🚀</span> Ship Selection
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
+              <div className="flex-1">
+                <div className="relative">
+                  <Input
+                    placeholder="Search ships..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 pl-10"
+                  />
+                  <Filter className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  onClick={toggleAllClasses}
+                  variant="outline"
+                  className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20"
+                >
+                  {Object.values(activeClasses).every(active => active) ? "Deselect All" : "Select All"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <div className="flex flex-wrap gap-2">
+                {SHIP_CLASSES.map(shipClass => (
+                  <Button
+                    key={shipClass}
+                    onClick={() => toggleClass(shipClass)}
+                    variant={activeClasses[shipClass] ? "default" : "outline"}
+                    className={`bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 ${
+                      activeClasses[shipClass] ? "bg-cyan-600/20 text-cyan-300" : ""
+                    }`}
+                  >
+                    {shipClass}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredShips.map(ship => (
+                <ShipCard 
+                  key={ship.id} 
+                  ship={ship} 
+                  onAdd={addShip}
+                  disabled={totalCP + ship.cp > 400}
+                />
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
