@@ -70,6 +70,8 @@ export const ships: Ship[] = [
   { id: "s-levy9", name: "S-Levy9 - Heavy Torpedo Escort Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
   { id: "silent-assassin", name: "Silent Assassin - Armored Corvette", shipClass: "Corvette", tier: "C", cp: 0 },
   { id: "void-elfin", name: "Void Elfin - Stealth Missile Corvette", shipClass: "Corvette", tier: "A", cp: 0 },
+  { id: "phecda-heavy", name: "Phecda - Heavy Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
+  { id: "phecda-assault", name: "Phecda - Assault Corvette", shipClass: "Corvette", tier: "TBD", cp: 0 },
 
   // Frigates
   { id: "carilion-cannon", name: "Carilion - Heavy Cannon Frigate", shipClass: "Frigate", tier: "A", cp: 5 },
