@@ -252,7 +252,7 @@ export function FleetBuilder() {
                   {SHIP_CLASSES.map(shipClass => (
                     <div key={shipClass} className="flex justify-between items-center">
                       <span className="text-gray-300 text-sm">{shipClass}</span>
-                      <Badge className="bg-c-cyan-600/30 text-cyan-300">
+                      <Badge className="bg-cyan-600/30 text-cyan-300">
                         {getShipClassCount(shipClass)}
                       </Badge>
                     </div>
