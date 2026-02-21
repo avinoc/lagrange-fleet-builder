@@ -47,8 +47,6 @@ export function FleetBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState<Ship["shipClass"] | "All">("All");
   const [totalCP, setTotalCP] = useState(0);
-  const [showShareDialog, setShowShareDialog] = useState(false);
-  const [shareUrl, setShareUrl] = useState("");
 
   // Load fleet from localStorage on mount
   useEffect(() => {
@@ -115,14 +113,6 @@ export function FleetBuilder() {
     setFleet([]);
   };
 
-  const generateShareUrl = () => {
-    const fleetData = btoa(JSON.stringify(fleet));
-    const url = `${window.location.origin}?fleet=${fleetData}`;
-    setShareUrl(url);
-    navigator.clipboard.writeText(url);
-    showSuccess("Share link copied to clipboard!");
-  };
-
   const importFleet = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const fleetData = urlParams.get("fleet");
@@ -173,14 +163,6 @@ export function FleetBuilder() {
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Clear Fleet
-            </Button>
-            <Button 
-              onClick={generateShareUrl}
-              variant="outline"
-              className="border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Your Fleet
             </Button>
           </div>
         </div>
@@ -329,32 +311,6 @@ export function FleetBuilder() {
             )}
           </CardContent>
         </Card>
-
-        <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-          <DialogContent className="bg-gray-900 border-cyan-500/30 backdrop-blur-sm max-w-md">
-            <DialogHeader>
-              <DialogTitle className="text-cyan-300">Share Your Fleet</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Input 
-                  value={shareUrl} 
-                  readOnly 
-                  className="bg-gray-800/50 border-cyan-500/30 text-white"
-                />
-                <Button 
-                  onClick={() => navigator.clipboard.writeText(shareUrl)}
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white"
-                >
-                  <Copy className="w-4 h-4" />
-                </Button>
-              </div>
-              <p className="text-gray-400 text-sm">
-                Share this link with others to import your fleet!
-              </p>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );
