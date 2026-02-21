@@ -58,7 +58,6 @@ export function ShipCard({ ship, onAdd, onReinforce, disabled }: ShipCardProps) 
             </Button>
             <Button 
               onClick={() => onReinforce(ship)}
-              disabled={disabled}
               className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-6"
             >
               Reinforce
