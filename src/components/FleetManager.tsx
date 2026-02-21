@@ -5,6 +5,7 @@ import { Ship } from '../types/ship';
 import ShipCard from './ShipCard';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface FleetManagerProps {
   ships: Ship[];
