@@ -1,67 +1,61 @@
-"use client";
-
-import React, { useState } from 'react';
-import { Ship } from '../types/ship';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Ship } from "@/types/ship";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CLASS_ICONS } from '../types/ship';
+import { Button } from "@/components/ui/button";
+import { CLASS_ICONS } from "@/types/ship";
+import { cn } from "@/lib/utils";
 
 interface ShipCardProps {
   ship: Ship;
-  isReinforced?: boolean;
-  onReinforce?: () => void;
-  maxReinforcements?: number;
+  onAdd: (ship: Ship) => void;
+  disabled?: boolean;
 }
 
-const ShipCard: React.FC<ShipCardProps> = ({ 
-  ship, 
-  isReinforced = false, 
-  onReinforce,
-  maxReinforcements = 9
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
+export function ShipCard({ ship, onAdd, disabled }: ShipCardProps) {
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case "S": return "bg-purple-500";
+      case "A": return "bg-blue-500";
+      case "B": return "bg-green-500";
+      case "C": return "bg-yellow-500";
+      case "D": return "bg-orange-500";
+      case "Sit.": return "bg-red-500";
+      default: return "bg-gray-500";
+    }
+  };
 
   return (
-    <Card 
-      className={`w-full transition-all duration-200 ${
-        isReinforced ? 'ring-2 ring-blue-500 bg-blue-50' : 'hover:shadow-lg'
-      }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <span className="text-2xl">{CLASS_ICONS[ship.shipClass]}</span>
-            {ship.name}
-          </CardTitle>
-          {isReinforced && (
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-              Reinforced
-            </Badge>
-          )}
+    <Card className={cn(
+      "bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-300",
+      "shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20",
+      disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105",
+      "h-full flex flex-col"
+    )}>
+      <CardContent className="p-3 flex-1 flex flex-col">
+        <div className="flex justify-between items-start mb-2">
+          <div>
+            <h3 className="font-bold text-cyan-300 text-sm">{ship.name}</h3>
+            <div className="flex items-center gap-1 mt-1">
+              <span className="text-cyan-400 font-mono text-xs">{CLASS_ICONS[ship.shipClass]}</span>
+              <span className="text-gray-300 text-xs">{ship.shipClass}</span>
+            </div>
+          </div>
+          <Badge className={cn("text-xs", getTierColor(ship.tier))}>
+            {ship.tier}
+          </Badge>
         </div>
-        <div className="flex justify-between items-center mt-1">
-          <Badge variant="outline">{ship.shipClass}</Badge>
-          <Badge variant="outline">{ship.tier}</Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-sm font-medium">CP: {ship.cp}</span>
+        
+        <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-700">
+          <span className="text-cyan-400 font-mono text-xs">CP: {ship.cp}</span>
           <Button 
-            size="sm" 
-            variant={isReinforced ? "secondary" : "default"}
-            onClick={onReinforce}
-            disabled={isReinforced || !onReinforce}
+            onClick={() => onAdd(ship)}
+            disabled={disabled}
+            className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
           >
-            {isReinforced ? 'Reinforced' : 'Reinforce'}
+            Add
           </Button>
         </div>
       </CardContent>
     </Card>
   );
-};
-
-export default ShipCard;
+}
