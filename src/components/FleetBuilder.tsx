@@ -292,7 +292,7 @@ export function FleetBuilder() {
                     <TableRow key={item.ship.id} className="border-cyan-500/20">
                       <TableCell className="font-medium text-cyan-300">{item.ship.name}</TableCell>
                       <TableCell className="text-right">
-                        <Badge className="bg-cyan-600/30 text-cyan-300">
+                        <Badge className="bg-ccyan-600/30 text-cyan-300">
                           {item.ship.shipClass}
                         </Badge>
                       </TableCell>
@@ -328,37 +328,29 @@ export function FleetBuilder() {
         </Card>
 
         <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 mb-8">
-          <CardHeader>
-            <CardTitle className="text-cyan-300 flex items-center gap-2">
-              <span className="text-2xl">⚙️</span> Settings
+          <CardHeader className="pb-2">
+            <CardTitle className="text-cyan-300 flex items-center gap-2 text-sm">
+              <Settings className="w-4 h-4" />
+              <span>Maximum CP Limit</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Maximum CP Limit
-                </label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    value={maxCP}
-                    onChange={(e) => setMaxCP(Number(e.target.value))}
-                    className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400"
-                    min="0"
-                  />
-                  <Button 
-                    onClick={() => setMaxCP(400)}
-                    variant="outline"
-                    className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
-                  >
-                    Reset to 400
-                  </Button>
-                </div>
-              </div>
-              <div className="text-sm text-gray-400">
-                Current limit: <span className="text-cyan-400 font-bold">{maxCP}</span>
-              </div>
+          <CardContent className="pt-2">
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                value={maxCP}
+                onChange={(e) => setMaxCP(Number(e.target.value))}
+                className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 w-24"
+                min="0"
+              />
+              <Button 
+                onClick={() => setMaxCP(400)}
+                variant="outline"
+                className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20 text-xs px-3 py-1 h-8"
+              >
+                Reset
+              </Button>
+              <span className="text-gray-400 text-sm">Current: {maxCP}</span>
             </div>
           </CardContent>
         </Card>
@@ -386,7 +378,7 @@ export function FleetBuilder() {
                 <Button 
                   onClick={toggleAllClasses}
                   variant="outline"
-                  className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20"
+                  className="bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 text-xs px-3 py-1 h-8"
                 >
                   {Object.values(activeClasses).every(active => active) ? "Deselect All" : "Select All"}
                 </Button>
@@ -400,7 +392,7 @@ export function FleetBuilder() {
                     key={shipClass}
                     onClick={() => toggleClass(shipClass)}
                     variant={activeClasses[shipClass] ? "default" : "outline"}
-                    className={`bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 ${
+                    className={`bg-gray-800/50 border-cyan-500/30 text-white hover:bg-cyan-600/20 text-xs px-3 py-1 h-8 ${
                       activeClasses[shipClass] ? "bg-cyan-600/20 text-cyan-300" : ""
                     }`}
                   >
