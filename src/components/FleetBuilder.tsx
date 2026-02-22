@@ -242,7 +242,7 @@ export function FleetBuilder() {
           <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
             Fleet Builder
           </h1>
-          <p className="text-gray-400">Create your space fleet with a maximum CP of {maxCP}</p>
+          <p className="text-gray-400">Create your Infinite Lagrange fleet plan</p>
           
           <div className="flex justify-center mt-4 gap-2">
             <Button 
