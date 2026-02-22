@@ -27,9 +27,7 @@ import {
   Plus, 
   Filter,
   X,
-  Download,
-  Settings,
-  Save
+  Download
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -53,15 +51,10 @@ export function FleetBuilder() {
     Carrier: true,
     Battleship: true,
   });
-  const [maxCP, setMaxCP] = useState<number>(400);
-  const [showSettings, setShowSettings] = useState(false);
-  const [newMaxCP, setNewMaxCP] = useState<number>(400);
 
-  // Load fleet and settings from localStorage on mount
+  // Load fleet from localStorage on mount
   useEffect(() => {
     const savedFleet = localStorage.getItem("fleetBuilderFleet");
-    const savedMaxCP = localStorage.getItem("fleetBuilderMaxCP");
-    
     if (savedFleet) {
       try {
         const parsedFleet = JSON.parse(savedFleet);
@@ -71,16 +64,6 @@ export function FleetBuilder() {
         console.error("Failed to parse fleet from localStorage", e);
       }
     }
-    
-    if (savedMaxCP) {
-      try {
-        const parsedMaxCP = JSON.parse(savedMaxCP);
-        setMaxCP(parsedMaxCP);
-        setNewMaxCP(parsedMaxCP);
-      } catch (e) {
-        console.error("Failed to parse max CP from localStorage", e);
-      }
-    }
   }, []);
 
   // Save fleet to localStorage whenever it changes
@@ -88,11 +71,6 @@ export function FleetBuilder() {
     localStorage.setItem("fleetBuilderFleet", JSON.stringify(fleet));
     calculateTotalCP(fleet);
   }, [fleet]);
-
-  // Save max CP to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("fleetBuilderMaxCP", JSON.stringify(maxCP));
-  }, [maxCP]);
 
   const calculateTotalCP = (fleetItems: FleetItem[]) => {
     const total = fleetItems.reduce((sum, item) => sum + (item.ship.cp * item.count), 0);
@@ -240,22 +218,6 @@ export function FleetBuilder() {
     }
   };
 
-  const saveMaxCP = () => {
-    if (newMaxCP <= 0) {
-      showError("Maximum CP must be greater than 0");
-      return;
-    }
-    
-    if (newMaxCP > 800) {
-      showError("Maximum CP cannot exceed 800");
-      return;
-    }
-    
-    setMaxCP(newMaxCP);
-    setShowSettings(false);
-    showSuccess(`Maximum CP updated to ${newMaxCP}`);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -263,7 +225,7 @@ export function FleetBuilder() {
           <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
             Fleet Builder
           </h1>
-          <p className="text-gray-400">Create your space fleet with a maximum CP of {maxCP}</p>
+          <p className="text-gray-400">Create your space fleet with a maximum CP of 400</p>
           
           <div className="flex justify-center mt-4 gap-2">
             <Button 
@@ -281,14 +243,6 @@ export function FleetBuilder() {
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Clear Fleet
-            </Button>
-            <Button 
-              onClick={() => setShowSettings(true)}
-              variant="outline"
-              className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
             </Button>
           </div>
         </div>
@@ -411,52 +365,12 @@ export function FleetBuilder() {
                   onAdd={addShip}
                   onReinforce={reinforceShip}
                   // Only disable the add button, not the reinforce button
-                  disabled={totalCP + ship.cp > maxCP}
+                  disabled={totalCP + ship.cp > 400}
                 />
               ))}
             </div>
           </CardContent>
         </Card>
-
-        {/* Settings Dialog */}
-        <Dialog open={showSettings} onOpenChange={setShowSettings}>
-          <DialogContent className="bg-gray-900 border-cyan-500/30 max-w-md">
-            <DialogHeader>
-              <DialogTitle className="text-cyan-300">Fleet Settings</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div>
-                <label className="text-cyan-300 text-sm">Maximum CP Limit</label>
-                <Input
-                  type="number"
-                  value={newMaxCP}
-                  onChange={(e) => setNewMaxCP(Number(e.target.value))}
-                  className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 mt-1"
-                  min="1"
-                  max="800"
-                />
-                <p className="text-gray-400 text-xs mt-1">Set the maximum CP limit for your fleet (1-800)</p>
-              </div>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button 
-                onClick={() => setShowSettings(false)}
-                variant="outline"
-                className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={saveMaxCP}
-                variant="default"
-                className="bg-cyan-600 hover:bg-cyan-700 text-white"
-              >
-                <Save className="w-4 h-4 mr-2" />
-                Save Settings
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );
