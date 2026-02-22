@@ -28,17 +28,6 @@ export interface Ship {
   description?: string;
 }
 
-export const CLASS_ICONS: Record<ShipClass, string> = {
-  Fighter: "✈️",
-  Corvette: "⛵",
-  Frigate: "🚤",
-  Destroyer: "🚢",
-  Cruiser: "⚓",
-  Battlecruiser: "⚔️",
-  Carrier: "🛳️",
-  Battleship: "⚓"
-};
-
 export const ships: Ship[] = [
   // ... existing ships ...
   {
