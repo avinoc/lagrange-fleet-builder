@@ -107,7 +107,9 @@ export function FleetBuilder() {
         );
       } else {
         // Add new ship
-        return [...prevFleet, { ship, count: 1 }];
+        // Create a copy of the original ship object
+        const originalShip = ships.find(s => s.id === ship.id) || ship;
+        return [...prevFleet, { ship: { ...originalShip }, count: 1 }];
       }
     });
   };
