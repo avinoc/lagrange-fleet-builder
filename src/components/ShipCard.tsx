@@ -19,16 +19,26 @@ export function ShipCard({ ship, onAdd, onReinforce, disabled }: ShipCardProps) 
       case "A": return "bg-blue-500";
       case "B": return "bg-green-500";
       case "C": return "bg-yellow-500";
-      case "D": return "bg-orange-500";
+      case "D": return "bg-red-500";
       case "Sit.": return "bg-red-500";
       default: return "bg-gray-500";
     }
   };
 
+  const handleAddShip = () => {
+    onAdd(ship);
+  };
+
+  const handleReinforceShip = () => {
+    // Create a new ship object with 0 CP for reinforcement
+    const reinforcedShip = { ...ship, cp: 0 };
+    onReinforce(reinforcedShip);
+  };
+
   return (
     <Card className={cn(
       "bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-300",
-      "shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20",
+      "shadow-lg shadow-cyan-500/10",
       disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105",
       "h-full flex flex-col"
     )}>
@@ -50,14 +60,14 @@ export function ShipCard({ ship, onAdd, onReinforce, disabled }: ShipCardProps) 
           <span className="text-cyan-400 font-mono text-xs">CP: {ship.cp}</span>
           <div className="flex gap-1">
             <Button 
-              onClick={() => onAdd(ship)}
+              onClick={handleAddShip}
               disabled={disabled}
               className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs px-2 py-1 h-6"
             >
               Add
             </Button>
             <Button 
-              onClick={() => onReinforce(ship)}
+              onClick={handleReinforceShip}
               className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-6"
             >
               Reinforce
