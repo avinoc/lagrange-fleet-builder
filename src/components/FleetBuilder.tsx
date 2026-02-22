@@ -264,6 +264,36 @@ export function FleetBuilder() {
           </div>
         </div>
 
+        {/* Top-right settings box */}
+        <div className="absolute top-4 right-4 z-10">
+          <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 w-48">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-cyan-300 text-sm font-medium">Max CP</span>
+                <Button 
+                  onClick={() => setMaxCP(400)}
+                  variant="outline"
+                  size="sm"
+                  className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20 text-xs px-2 py-1 h-6"
+                >
+                  Reset
+                </Button>
+              </div>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={maxCP}
+                  onChange={(e) => setMaxCP(Number(e.target.value))}
+                  className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 text-xs w-full"
+                  min="0"
+                  size={3}
+                />
+                <span className="text-gray-400 text-xs">Current: {maxCP}</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 mb-8">
           <CardHeader>
             <CardTitle className="text-cyan-300 flex items-center gap-2">
@@ -292,7 +322,7 @@ export function FleetBuilder() {
                     <TableRow key={item.ship.id} className="border-cyan-500/20">
                       <TableCell className="font-medium text-cyan-300">{item.ship.name}</TableCell>
                       <TableCell className="text-right">
-                        <Badge className="bg-ccyan-600/30 text-cyan-300">
+                        <Badge className="bg-cyan-600/30 text-cyan-300">
                           {item.ship.shipClass}
                         </Badge>
                       </TableCell>
@@ -324,34 +354,6 @@ export function FleetBuilder() {
                 </TableBody>
               </Table>
             )}
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 mb-8">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-cyan-300 flex items-center gap-2 text-sm">
-              <Settings className="w-4 h-4" />
-              <span>Maximum CP Limit</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-2">
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                value={maxCP}
-                onChange={(e) => setMaxCP(Number(e.target.value))}
-                className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400 w-24"
-                min="0"
-              />
-              <Button 
-                onClick={() => setMaxCP(400)}
-                variant="outline"
-                className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20 text-xs px-3 py-1 h-8"
-              >
-                Reset
-              </Button>
-              <span className="text-gray-400 text-sm">Current: {maxCP}</span>
-            </div>
           </CardContent>
         </Card>
 
