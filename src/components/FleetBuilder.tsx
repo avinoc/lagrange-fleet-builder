@@ -240,7 +240,7 @@ export function FleetBuilder() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
-            Infinite Lagrange Fleet Builder
+            Fleet Builder
           </h1>
           <p className="text-gray-400">Create your Infinite Lagrange fleet plan</p>
           
