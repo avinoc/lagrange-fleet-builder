@@ -99,37 +99,34 @@ export function FleetBuilder() {
       const existingItem = prevFleet.find(item => item.ship.id === ship.id);
       
       if (existingItem) {
-        // If ship already exists, increase count
         return prevFleet.map(item => 
           item.ship.id === ship.id 
             ? { ...item, count: item.count + 1 } 
             : item
         );
       } else {
-        // Add new ship
-        // Create a copy of the original ship object
-        const originalShip = ships.find(s => s.id === ship.id) || ship;
-        return [...prevFleet, { ship: { ...originalShip }, count: 1 }];
+        return [...prevFleet, { ship: { ...ship }, count: 1 }];
       }
     });
   };
 
   const reinforceShip = (ship: Ship) => {
-    // Add ship with 0 CP cost (reinforce)
+    // Create a new ship object with a distinct identifier for reinforcement
+    const reinforcedShip = {
+      ...ship,
+      id: `${ship.id}-reinforced`,
+      cp: 0,
+    };
     setFleet(prevFleet => {
-      const existingItem = prevFleet.find(item => item.ship.id === ship.id);
+      const existingItem = prevFleet.find(item => item.ship.id === reinforcedShip.id);
       
       if (existingItem) {
-        // If ship already exists, increase count
         return prevFleet.map(item => 
-          item.ship.id === ship.id 
+          item.ship.id === reinforcedShip.id 
             ? { ...item, count: item.count + 1 } 
             : item
         );
       } else {
-        // Add new ship with 0 CP cost (reinforce)
-        // We need to create a new ship object with 0 CP for reinforcement
-        const reinforcedShip = { ...ship, cp: 0 };
         return [...prevFleet, { ship: reinforcedShip, count: 1 }];
       }
     });
@@ -140,14 +137,12 @@ export function FleetBuilder() {
       const existingItem = prevFleet.find(item => item.ship.id === shipId);
       
       if (existingItem && existingItem.count > 1) {
-        // Decrease count if more than one
         return prevFleet.map(item => 
           item.ship.id === shipId 
             ? { ...item, count: item.count - 1 } 
             : item
         );
       } else {
-        // Remove item if count is 1 or less
         return prevFleet.filter(item => item.ship.id !== shipId);
       }
     });
