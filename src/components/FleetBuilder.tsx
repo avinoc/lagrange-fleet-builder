@@ -317,7 +317,14 @@ export function FleetBuilder() {
                 <TableBody>
                   {fleet.map((item) => (
                     <TableRow key={item.ship.id} className="border-cyan-500/20">
-                      <TableCell className="font-medium text-cyan-300">{item.ship.name}</TableCell>
+                      <TableCell className="font-medium text-cyan-300">
+                        {item.ship.name}
+                        {item.ship.id.endsWith('-reinforced') && (
+                          <Badge className="bg-purple-600/50 text-purple-300 ml-2">
+                            Reinforced
+                          </Badge>
+                        )}
+                      </TableCell>
                       <TableCell className="text-right">
                         <Badge className="bg-cyan-600/30 text-cyan-300">
                           {item.ship.shipClass}
