@@ -27,7 +27,8 @@ import {
   Plus, 
   Filter,
   X,
-  Download
+  Download,
+  Settings
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 
@@ -51,10 +52,13 @@ export function FleetBuilder() {
     Carrier: true,
     Battleship: true,
   });
+  const [maxCP, setMaxCP] = useState<number>(400);
 
-  // Load fleet from localStorage on mount
+  // Load fleet and maxCP from localStorage on mount
   useEffect(() => {
     const savedFleet = localStorage.getItem("fleetBuilderFleet");
+    const savedMaxCP = localStorage.getItem("fleetBuilderMaxCP");
+    
     if (savedFleet) {
       try {
         const parsedFleet = JSON.parse(savedFleet);
@@ -64,13 +68,26 @@ export function FleetBuilder() {
         console.error("Failed to parse fleet from localStorage", e);
       }
     }
+    
+    if (savedMaxCP) {
+      try {
+        const parsedMaxCP = JSON.parse(savedMaxCP);
+        setMaxCP(parsedMaxCP);
+      } catch (e) {
+        console.error("Failed to parse maxCP from localStorage", e);
+      }
+    }
   }, []);
 
-  // Save fleet to localStorage whenever it changes
+  // Save fleet and maxCP to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("fleetBuilderFleet", JSON.stringify(fleet));
     calculateTotalCP(fleet);
   }, [fleet]);
+
+  useEffect(() => {
+    localStorage.setItem("fleetBuilderMaxCP", JSON.stringify(maxCP));
+  }, [maxCP]);
 
   const calculateTotalCP = (fleetItems: FleetItem[]) => {
     const total = fleetItems.reduce((sum, item) => sum + (item.ship.cp * item.count), 0);
@@ -225,7 +242,7 @@ export function FleetBuilder() {
           <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
             Fleet Builder
           </h1>
-          <p className="text-gray-400">Create your space fleet with a maximum CP of 400</p>
+          <p className="text-gray-400">Create your space fleet with a maximum CP of {maxCP}</p>
           
           <div className="flex justify-center mt-4 gap-2">
             <Button 
@@ -310,6 +327,42 @@ export function FleetBuilder() {
           </CardContent>
         </Card>
 
+        <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10 mb-8">
+          <CardHeader>
+            <CardTitle className="text-cyan-300 flex items-center gap-2">
+              <span className="text-2xl">⚙️</span> Settings
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Maximum CP Limit
+                </label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    value={maxCP}
+                    onChange={(e) => setMaxCP(Number(e.target.value))}
+                    className="bg-gray-800/50 border-cyan-500/30 text-white placeholder-gray-400"
+                    min="0"
+                  />
+                  <Button 
+                    onClick={() => setMaxCP(400)}
+                    variant="outline"
+                    className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
+                  >
+                    Reset to 400
+                  </Button>
+                </div>
+              </div>
+              <div className="text-sm text-gray-400">
+                Current limit: <span className="text-cyan-400 font-bold">{maxCP}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="bg-gray-900/50 border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/10">
           <CardHeader>
             <CardTitle className="text-cyan-300 flex items-center gap-2">
@@ -365,7 +418,7 @@ export function FleetBuilder() {
                   onAdd={addShip}
                   onReinforce={reinforceShip}
                   // Only disable the add button, not the reinforce button
-                  disabled={totalCP + ship.cp > 400}
+                  disabled={totalCP + ship.cp > maxCP}
                 />
               ))}
             </div>
