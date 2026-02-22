@@ -154,17 +154,24 @@ export function FleetBuilder() {
 
   const importFleet = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const fleetData = urlParams.get("fleet");
+    const fleetHash = urlParams.get("fleet");
     
-    if (fleetData) {
-      try {
-        const decodedFleet = JSON.parse(atob(fleetData));
-        setFleet(decodedFleet);
-        calculateTotalCP(decodedFleet);
-        showSuccess("Fleet imported successfully!");
-      } catch (e) {
-        showError("Failed to import fleet");
-        console.error("Failed to import fleet", e);
+    if (fleetHash) {
+      const savedFleet = localStorage.getItem(`fleet_${fleetHash}`);
+      
+      if (savedFleet) {
+        try {
+          const decodedFleet = JSON.parse(savedFleet);
+          setFleet(decodedFleet);
+          calculateTotalCP(decodedFleet);
+          showSuccess("Fleet imported successfully!");
+        } catch (e) {
+          showError("Failed to import fleet");
+          console.error("Failed to parse fleet from localStorage", e);
+        }
+      } else {
+        showError("Fleet not found. The share code might be invalid.");
+        console.error("Fleet not found in localStorage");
       }
     }
   };
@@ -207,6 +214,18 @@ export function FleetBuilder() {
     }));
   };
 
+  // Generate a short hash for the fleet
+  const generateHash = (data: any): string => {
+    let hash = 0;
+    const string = JSON.stringify(data);
+    for (let i = 0; i < string.length; i++) {
+      const char = string.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(36).substr(0, 6);
+  };
+
   const generateShareCode = () => {
     if (fleet.length === 0) {
       showError("Your fleet is empty. Add ships to generate a share code.");
@@ -214,8 +233,14 @@ export function FleetBuilder() {
     }
     
     try {
-      const encodedFleet = btoa(JSON.stringify(fleet));
-      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${encodedFleet}`;
+      // Generate a hash for the fleet
+      const hash = generateHash(fleet);
+      
+      // Store the fleet data in localStorage with the hash as the key
+      localStorage.setItem(`fleet_${hash}`, JSON.stringify(fleet));
+      
+      // Create the shortened URL
+      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${hash}`;
       
       // Copy to clipboard
       navigator.clipboard.writeText(shareUrl)
