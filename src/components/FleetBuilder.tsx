@@ -31,19 +31,10 @@ import {
   Settings
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
-import { supabase } from "@/lib/supabase";
 
 interface FleetItem {
   ship: Ship;
   count: number;
-}
-
-// Add the new types
-interface FleetRecord {
-  id: string;
-  fleet_data: { ship: Ship; count: number }[];
-  created_at: string;
-  expires_at: string;
 }
 
 export function FleetBuilder() {
@@ -62,8 +53,6 @@ export function FleetBuilder() {
     Battleship: true,
   });
   const [maxCP, setMaxCP] = useState<number>(400);
-  const [loading, setLoading] = useState(false);
-  const [fetchedFleetId, setFetchedFleetId] = useState<string | null>(null);
 
   // Load fleet and maxCP from localStorage on mount
   useEffect(() => {
@@ -164,42 +153,19 @@ export function FleetBuilder() {
   };
 
   // Function to import fleet from URL
-  const importFleetFromURL = async (url: string) => {
+  const importFleetFromURL = (url: string) => {
     const urlParams = new URLSearchParams(url.split('?')[1] || '');
-    const fleetId = urlParams.get("fleet");
+    const fleetData = urlParams.get("fleet");
     
-    if (fleetId) {
+    if (fleetData) {
       try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from("fleets")
-          .select("*")
-          .eq("id", fleetId)
-          .maybeSingle();
-        
-        if (error) {
-          throw error;
-        }
-        
-        if (data) {
-          // Convert fleet_data back to FleetItem format
-          const parsedFleet = data.fleet_data.map(item => ({
-            ship: item.ship,
-            count: item.count
-          }));
-          
-          setFleet(parsedFleet);
-          setFetchedFleetId(fleetId);
-          calculateTotalCP(parsedFleet);
-          showSuccess("Fleet imported successfully!");
-        } else {
-          showError("Fleet not found");
-        }
+        const decodedFleet = JSON.parse(decodeURIComponent(atob(fleetData)));
+        setFleet(decodedFleet);
+        calculateTotalCP(decodedFleet);
+        showSuccess("Fleet imported successfully!");
       } catch (e) {
-        console.error("Failed to fetch fleet", e);
         showError("Failed to import fleet");
-      } finally {
-        setLoading(false);
+        console.error("Failed to parse fleet from URL", e);
       }
     }
   };
@@ -244,43 +210,30 @@ export function FleetBuilder() {
     }));
   };
 
-  // Generate a new UUID for fleet sharing
-  const generateShareCode = async () => {
+  // Generate a short hash for the fleet
+  const generateHash = (data: any): string => {
+    let hash = 0;
+    const string = JSON.stringify(data);
+    for (let i = 0; i < string.length; i++) {
+      const char = string.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(36).substr(0, 6);
+  };
+
+  const generateShareCode = () => {
     if (fleet.length === 0) {
       showError("Your fleet is empty. Add ships to generate a share code.");
       return;
     }
     
     try {
-      setLoading(true);
-      // Convert fleet to the format that will be stored
-      const fleetData = fleet.map(item => ({
-        ship: item.ship,
-        count: item.count
-      }));
-      
-      // Generate UUID
-      const { data: { uuid } } = await supabase
-        .rpc('generate_uuid');
-      
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 7); // 7 days expiration
-      
-      // Insert to database
-      const { data, error } = await supabase
-        .from('fleets')
-        .insert({
-          id: uuid,
-          fleet_data: fleetData,
-          expires_at: expiryDate.toISOString()
-        });
-        
-      if (error) {
-        throw error;
-      }
+      // Generate a hash for the fleet
+      const hash = generateHash(fleet);
       
       // Create the shortened URL
-      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${uuid}`;
+      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${btoa(encodeURIComponent(JSON.stringify(fleet)))}`;
       
       // Copy to clipboard
       navigator.clipboard.writeText(shareUrl)
@@ -294,8 +247,6 @@ export function FleetBuilder() {
     } catch (error) {
       console.error("Error generating share code:", error);
       showError("Failed to generate share code");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -313,13 +264,8 @@ export function FleetBuilder() {
               onClick={generateShareCode}
               variant="outline"
               className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
-              disabled={loading}
             >
-              {loading ? (
-                <div className="w-4 h-4 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Share2 className="w-4 h-4 mr-2" />
-              )}
+              <Share2 className="w-4 h-4 mr-2" />
               Share Fleet
             </Button>
             <Button 
