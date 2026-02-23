@@ -203,13 +203,8 @@ export default function FleetShare() {
           </CardContent>
         </Card>
 
-        {/* Display message if fleet is expired */}
-        {fleet.length > 0 && (
-          <div className="mt-4 p-4 bg-gray-800/50 border-l-4 border-cyan-500/30 text-cyan-300">
-            <p className="text-sm">This fleet will expire in 24 hours. The original creator can view and modify this fleet at any time.</p>
-          </div>
-        )}
-
+        {/* Removed the expiration message */}
+        
         <div className="mt-8 text-center text-gray-400">
           <p>Share this link to allow others to view your fleet plan.</p>
         </div>
