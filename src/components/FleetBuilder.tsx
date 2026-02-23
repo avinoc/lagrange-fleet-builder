@@ -268,9 +268,9 @@ export function FleetBuilder() {
     }
     
     try {
-      // Calculate expiration time (24 hours from now)
+      // Calculate expiration time (2000 years from now - effectively never expires)
       const expiresAt = new Date();
-      expiresAt.setTime(expiresAt.getTime() + 24 * 60 * 60 * 1000);
+      expiresAt.setTime(expiresAt.getTime() + 2000 * 365 * 24 * 60 * 60 * 1000);
       
       // Insert fleet data into Supabase with generated UUID
       const { data, error } = await supabase
