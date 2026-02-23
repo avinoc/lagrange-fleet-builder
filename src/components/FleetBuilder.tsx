@@ -38,6 +38,14 @@ interface FleetItem {
   count: number;
 }
 
+// New UUID generation function
+const generateUUID = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+};
+
 export function FleetBuilder() {
   const [fleet, setFleet] = useState<FleetItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -264,11 +272,12 @@ export function FleetBuilder() {
       const expiresAt = new Date();
       expiresAt.setTime(expiresAt.getTime() + 24 * 60 * 60 * 1000);
       
-      // Insert fleet data into Supabase with .select('id')
+      // Insert fleet data into Supabase with generated UUID
       const { data, error } = await supabase
         .from('fleets')
         .insert([
           {
+            id: generateUUID(),
             fleet_data: JSON.stringify(fleet),
             expires_at: expiresAt.toISOString()
           }
@@ -279,7 +288,6 @@ export function FleetBuilder() {
         throw error;
       }
       
-      // Now data is an array containing the inserted record
       const uuid = data?.[0]?.id;
       
       if (!uuid) {
