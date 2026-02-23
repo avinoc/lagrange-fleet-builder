@@ -292,7 +292,7 @@ export function FleetBuilder() {
         .from('fleets')
         .insert([
           {
-            id: generateUUID(), // Added ID generation
+            id: generateUUID(),
             fleet_data: JSON.stringify(fleet),
             expires_at: expiresAt.toISOString()
           }
@@ -319,7 +319,11 @@ export function FleetBuilder() {
         });
     } catch (error) {
       console.error("Error generating share code:", error);
-      showError("Failed to generate share code");
+      if (error && error.message) {
+        showError(`Failed to generate share code: ${error.message}`);
+      } else {
+        showError("Failed to generate share code. Please check your Supabase configuration and table setup.");
+      }
     }
   };
 
