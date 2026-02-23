@@ -183,9 +183,6 @@ export function FleetBuilder() {
       if (savedFleet) {
         try {
           const decodedFleet = JSON.parse(savedFleet);
-          setFleet(decodedFleet);
-          calculateTotalCP(decodedFleet);
-          showSuccess("Fleet imported successfully!");
         } catch (e) {
           showError("Failed to import fleet");
           console.error("Failed to parse fleet from localStorage", e);
@@ -302,9 +299,16 @@ export function FleetBuilder() {
         throw error;
       }
       
-      // Safely access the UUID of the newly created record
-      const uuid = data?.[0]?.id;
-      
+      // Handle both possible response structures:
+      // 1. data is an array with the inserted record
+      // 2. data is a single object with the inserted record
+      let uuid = null;
+      if (data && data.length > 0) {
+        uuid = data[0].id;
+      } else if (data && data.id) {
+        uuid = data.id;
+      }
+
       if (!uuid) {
         throw new Error("Failed to get generated UUID from Supabase response");
       }
