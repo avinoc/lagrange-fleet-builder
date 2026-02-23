@@ -302,8 +302,12 @@ export function FleetBuilder() {
         throw error;
       }
       
-      // Use the UUID of the newly created record
-      const uuid = data[0].id;
+      // Safely access the UUID of the newly created record
+      const uuid = data?.[0]?.id;
+      
+      if (!uuid) {
+        throw new Error("Failed to get generated UUID from Supabase response");
+      }
       
       // Create the shortened URL
       const shareUrl = `${window.location.origin}/fleet/${uuid}`;
