@@ -38,14 +38,6 @@ interface FleetItem {
   count: number;
 }
 
-// New UUID generation function
-const generateUUID = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-};
-
 export function FleetBuilder() {
   const [fleet, setFleet] = useState<FleetItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -261,18 +253,6 @@ export function FleetBuilder() {
     }));
   };
 
-  // Generate a short hash for the fleet (this is now unused)
-  const generateHash = (data: any): string => {
-    let hash = 0;
-    const string = JSON.stringify(data);
-    for (let i = 0; i < string.length; i++) {
-      const char = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(36).substr(0, 6);
-  };
-
   const generateShareCode = async () => {
     if (fleet.length === 0) {
       showError("Your fleet is empty. Add ships to generate a share code.");
@@ -284,31 +264,24 @@ export function FleetBuilder() {
       const expiresAt = new Date();
       expiresAt.setTime(expiresAt.getTime() + 24 * 60 * 60 * 1000);
       
-      // Insert fleet data into Supabase
+      // Insert fleet data into Supabase with .select('id')
       const { data, error } = await supabase
         .from('fleets')
         .insert([
           {
-            id: generateUUID(),
             fleet_data: JSON.stringify(fleet),
             expires_at: expiresAt.toISOString()
           }
-        ]);
+        ])
+        .select('id');
       
       if (error) {
         throw error;
       }
       
-      // Handle both possible response structures:
-      // 1. data is an array with the inserted record
-      // 2. data is a single object with the inserted record
-      let uuid = null;
-      if (data && data.length > 0) {
-        uuid = data[0].id;
-      } else if (data && data.id) {
-        uuid = data.id;
-      }
-
+      // Now data is an array containing the inserted record
+      const uuid = data?.[0]?.id;
+      
       if (!uuid) {
         throw new Error("Failed to get generated UUID from Supabase response");
       }
