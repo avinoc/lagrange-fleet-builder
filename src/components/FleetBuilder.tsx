@@ -152,32 +152,28 @@ export function FleetBuilder() {
     setFleet([]);
   };
 
-  const importFleet = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const fleetHash = urlParams.get("fleet");
+  // Function to import fleet from URL
+  const importFleetFromURL = (url: string) => {
+    const urlParams = new URLSearchParams(url.split('?')[1] || '');
+    const fleetData = urlParams.get("fleet");
     
-    if (fleetHash) {
-      const savedFleet = localStorage.getItem(`fleet_${fleetHash}`);
-      
-      if (savedFleet) {
-        try {
-          const decodedFleet = JSON.parse(savedFleet);
-          setFleet(decodedFleet);
-          calculateTotalCP(decodedFleet);
-          showSuccess("Fleet imported successfully!");
-        } catch (e) {
-          showError("Failed to import fleet");
-          console.error("Failed to parse fleet from localStorage", e);
-        }
-      } else {
-        showError("Fleet not found. The share code might be invalid.");
-        console.error("Fleet not found in localStorage");
+    if (fleetData) {
+      try {
+        const decodedFleet = JSON.parse(decodeURIComponent(atob(fleetData)));
+        setFleet(decodedFleet);
+        calculateTotalCP(decodedFleet);
+        showSuccess("Fleet imported successfully!");
+      } catch (e) {
+        showError("Failed to import fleet");
+        console.error("Failed to parse fleet from URL", e);
       }
     }
   };
 
+  // Load fleet from URL on mount
   useEffect(() => {
-    importFleet();
+    const url = window.location.href;
+    importFleetFromURL(url);
   }, []);
 
   const filteredShips = ships.filter(ship => {
@@ -236,11 +232,8 @@ export function FleetBuilder() {
       // Generate a hash for the fleet
       const hash = generateHash(fleet);
       
-      // Store the fleet data in localStorage with the hash as the key
-      localStorage.setItem(`fleet_${hash}`, JSON.stringify(fleet));
-      
       // Create the shortened URL
-      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${hash}`;
+      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${btoa(encodeURIComponent(JSON.stringify(fleet)))}`;
       
       // Copy to clipboard
       navigator.clipboard.writeText(shareUrl)
@@ -261,7 +254,7 @@ export function FleetBuilder() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-50=">
             Fleet Builder
           </h1>
           <p className="text-gray-400">Create your Infinite Lagrange fleet plan</p>
