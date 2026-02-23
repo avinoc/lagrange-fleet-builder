@@ -31,6 +31,7 @@ import {
   Settings
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
+import { supabase } from "@/lib/supabase";
 
 interface FleetItem {
   ship: Ship;
@@ -152,8 +153,20 @@ export function FleetBuilder() {
     setFleet([]);
   };
 
-  const importFleet = () => {
-    const urlParams = new URLSearchParams(window.location.search);
+  // Function to import fleet from URL (now handles both old and new sharing formats)
+  const importFleetFromURL = (url: string) => {
+    // Check for new path-based sharing format
+    const path = url.split('?')[0];
+    const match = path.match(/\/fleet\/([a-zA-Z0-9]+)/);
+    
+    if (match && match[1]) {
+      const uuid = match[1];
+      loadFleetFromSupabase(uuid);
+      return;
+    }
+
+    // Check for old query parameter sharing format
+    const urlParams = new URLSearchParams(url.split('?')[1] || '');
     const fleetHash = urlParams.get("fleet");
     
     if (fleetHash) {
@@ -176,8 +189,37 @@ export function FleetBuilder() {
     }
   };
 
+  // Load fleet from Supabase by UUID
+  const loadFleetFromSupabase = async (uuid: string) => {
+    const { data, error } = await supabase
+      .from('fleets')
+      .select('fleet_data')
+      .eq('id', uuid)
+      .single();
+
+    if (error) {
+      showError("Failed to load fleet");
+      console.error("Error loading fleet:", error);
+      return;
+    }
+
+    if (data) {
+      try {
+        const parsedFleet = JSON.parse(data.fleet_data);
+        setFleet(parsedFleet);
+        calculateTotalCP(parsedFleet);
+        showSuccess("Fleet loaded successfully!");
+      } catch (e) {
+        showError("Failed to parse fleet data");
+        console.error("Failed to parse fleet data", e);
+      }
+    }
+  };
+
+  // Load fleet from URL on mount
   useEffect(() => {
-    importFleet();
+    const url = window.location.href;
+    importFleetFromURL(url);
   }, []);
 
   const filteredShips = ships.filter(ship => {
@@ -214,7 +256,7 @@ export function FleetBuilder() {
     }));
   };
 
-  // Generate a short hash for the fleet
+  // Generate a short hash for the fleet (this is now unused)
   const generateHash = (data: any): string => {
     let hash = 0;
     const string = JSON.stringify(data);
@@ -226,21 +268,36 @@ export function FleetBuilder() {
     return Math.abs(hash).toString(36).substr(0, 6);
   };
 
-  const generateShareCode = () => {
+  const generateShareCode = async () => {
     if (fleet.length === 0) {
       showError("Your fleet is empty. Add ships to generate a share code.");
       return;
     }
     
     try {
-      // Generate a hash for the fleet
-      const hash = generateHash(fleet);
+      // Calculate expiration time (24 hours from now)
+      const expiresAt = new Date();
+      expiresAt.setTime(expiresAt.getTime() + 24 * 60 * 60 * 1000);
       
-      // Store the fleet data in localStorage with the hash as the key
-      localStorage.setItem(`fleet_${hash}`, JSON.stringify(fleet));
+      // Insert fleet data into Supabase
+      const { data, error } = await supabase
+        .from('fleets')
+        .insert([
+          {
+            fleet_data: JSON.stringify(fleet),
+            expires_at: expiresAt.toISOString()
+          }
+        ]);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Use the UUID of the newly created record
+      const uuid = data[0].id;
       
       // Create the shortened URL
-      const shareUrl = `${window.location.origin}${window.location.pathname}?fleet=${hash}`;
+      const shareUrl = `${window.location.origin}/fleet/${uuid}`;
       
       // Copy to clipboard
       navigator.clipboard.writeText(shareUrl)
