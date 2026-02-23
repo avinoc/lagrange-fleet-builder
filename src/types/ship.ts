@@ -168,6 +168,9 @@ export const ships: Ship[] = [
   { id: "alioth-defensive", name: "Alioth - Defensive Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
   { id: "alioth-support", name: "Alioth - Support Cruiser", shipClass: "Cruiser", tier: "TBD", cp: 20 },
   { id: "xt-20-auxiliary", name: "XT-20 - Auxiliary Cruiser", shipClass: "Cruiser", tier: "A", cp: 14 },
+  
+  // New ship added below
+  { id: "arctos-multi-role", name: "Arctos Multi-role Cruiser", shipClass: "Cruiser", tier: "C", cp: 18 },
 
   // Battlecruisers
   { id: "constantine", name: "Constantine the Great - Multi-Role Battlecruiser", shipClass: "Battlecruiser", tier: "A", cp: 35 },
