@@ -39,7 +39,7 @@ interface FleetItem {
   count: number;
 }
 
-export function FleetShare() {
+export default function FleetShare() {
   const { uuid } = useParams();
   const [fleet, setFleet] = useState<FleetItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
