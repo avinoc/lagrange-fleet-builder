@@ -20,18 +20,23 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
-import { 
-  Copy, 
-  Share2, 
-  Trash2, 
-  Plus, 
+import {
+  Copy,
+  Share2,
+  Trash2,
+  Plus,
   Filter,
   X,
   Download,
-  Settings
+  Settings,
+  Save,
+  FolderOpen
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 import { supabase } from "@/lib/supabase";
+import { SaveFleetDialog } from "@/components/SaveFleetDialog";
+import { SavedFleetsSheet } from "@/components/SavedFleetsSheet";
+import { addSavedFleet } from "@/lib/savedFleets";
 
 interface FleetItem {
   ship: Ship;
@@ -62,6 +67,8 @@ export function FleetBuilder() {
     Battleship: true,
   });
   const [maxCP, setMaxCP] = useState<number>(400);
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [savedFleetsOpen, setSavedFleetsOpen] = useState(false);
 
   // Load fleet and maxCP from localStorage on mount
   useEffect(() => {
@@ -316,6 +323,43 @@ export function FleetBuilder() {
     }
   };
 
+  const saveFleet = async (name: string) => {
+    if (fleet.length === 0) {
+      showError("Your fleet is empty. Add ships to save a fleet.");
+      return;
+    }
+    try {
+      const expiresAt = new Date();
+      expiresAt.setTime(expiresAt.getTime() + 2000 * 365 * 24 * 60 * 60 * 1000);
+      const id = generateUUID();
+
+      const { error } = await supabase
+        .from('fleets')
+        .insert([{ id, fleet_data: JSON.stringify(fleet), expires_at: expiresAt.toISOString() }]);
+
+      if (error) throw error;
+
+      addSavedFleet({
+        id,
+        name,
+        totalCP,
+        shipCount: fleet.reduce((sum, item) => sum + item.count, 0),
+        savedAt: new Date().toISOString(),
+      });
+
+      setSaveDialogOpen(false);
+      showSuccess(`Fleet "${name}" saved!`);
+    } catch (error) {
+      console.error("Error saving fleet:", error);
+      showError("Failed to save fleet.");
+    }
+  };
+
+  const handleLoadFleet = async (id: string) => {
+    await loadFleetFromSupabase(id);
+    setSavedFleetsOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-black p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -325,8 +369,24 @@ export function FleetBuilder() {
           </h1>
           <p className="text-gray-400">Create your Infinite Lagrange fleet plan</p>
           
-          <div className="flex justify-center mt-4 gap-2">
-            <Button 
+          <div className="flex flex-wrap justify-center mt-4 gap-2">
+            <Button
+              onClick={() => setSaveDialogOpen(true)}
+              variant="outline"
+              className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              Save Fleet
+            </Button>
+            <Button
+              onClick={() => setSavedFleetsOpen(true)}
+              variant="outline"
+              className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
+            >
+              <FolderOpen className="w-4 h-4 mr-2" />
+              My Fleets
+            </Button>
+            <Button
               onClick={generateShareCode}
               variant="outline"
               className="bg-gray-800/50 border-cyan-500/30 text-cyan-300 hover:bg-cyan-600/20"
@@ -334,7 +394,7 @@ export function FleetBuilder() {
               <Share2 className="w-4 h-4 mr-2" />
               Share Fleet
             </Button>
-            <Button 
+            <Button
               onClick={clearFleet}
               variant="destructive"
               className="bg-red-600/20 hover:bg-red-600/30 text-red-300"
@@ -507,6 +567,17 @@ export function FleetBuilder() {
           </CardContent>
         </Card>
       </div>
+
+      <SaveFleetDialog
+        open={saveDialogOpen}
+        onClose={() => setSaveDialogOpen(false)}
+        onSave={saveFleet}
+      />
+      <SavedFleetsSheet
+        open={savedFleetsOpen}
+        onOpenChange={setSavedFleetsOpen}
+        onLoadFleet={handleLoadFleet}
+      />
     </div>
   );
 }
