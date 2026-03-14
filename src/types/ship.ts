@@ -123,7 +123,7 @@ export const ships: Ship[] = [
   { id: "guardian-support", name: "Guardian - Support Destroyer", shipClass: "Destroyer", tier: "A", cp: 9 },
   { id: "quaoar-railgun", name: "Quaoar - Railgun Destroyer", shipClass: "Destroyer", tier: "A", cp: 6 },
   { id: "quaoar-torpedo", name: "Quaoar - Torpedo Destroyer", shipClass: "Destroyer", tier: "A", cp: 6 },
-  { id: "taurus-pulse", name: "Taurus - Pulse Cannon Destroyer", shipClass: "Destroyer", tier: "A", cp: 8 },
+  { id: "taurus-pulse", name: "Taurus - Pulse Cannon Destroyer", shipClass: "Destroyer", tier: "A", cp: 11 },
   { id: "taurus-defensive", name: "Taurus - Defensive Destroyer", shipClass: "Destroyer", tier: "A", cp: 8 },
   { id: "taurus-assault", name: "Taurus - Assault Destroyer", shipClass: "Destroyer", tier: "A", cp: 8 },
   { id: "tundra-tactical", name: "Tundra - Tactical Destroyer", shipClass: "Destroyer", tier: "A", cp: 9 },
