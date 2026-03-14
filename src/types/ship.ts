@@ -44,6 +44,7 @@ export const ships: Ship[] = [
   { id: "at021-tactical", name: "AT021 - Tactical Attacker", shipClass: "Fighter", tier: "B", cp: 0 },
   { id: "at021-heavy", name: "AT021 - Heavy Attacker", shipClass: "Fighter", tier: "A", cp: 0 },
   { id: "b192-newland", name: "B192 Newland - Heavy Attacker", shipClass: "Fighter", tier: "C", cp: 0 },
+  { id: "br050-standard", name: "BR050 - Standard Bomber", shipClass: "Fighter", tier: "A", cp: 0 },
   { id: "balancer-sc020", name: "Balancer Anderson SC020 - Scout", shipClass: "Fighter", tier: "B", cp: 0 },
   { id: "bullfrog-bomber", name: "Bullfrog - Dual-Purpose Bomber", shipClass: "Fighter", tier: "C", cp: 0 },
   { id: "hayreddin-loyal", name: "Hayreddin's Loyal - Pulsar Fighter", shipClass: "Fighter", tier: "B", cp: 0 },
